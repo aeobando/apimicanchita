@@ -13,7 +13,7 @@ export class Usuarios extends Entity {
     type: 'string',
     required: true,
   })
-  nombre: string;
+  nombres: string;
 
   @property({
     type: 'string',
