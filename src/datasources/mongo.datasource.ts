@@ -10,7 +10,7 @@ const config = {
   user: 'root',
   password: '',
   database: 'micanchita',
-  useNewUrlParser: true
+  useNewUrlParser: false
 };
 
 // Observe application's life cycle to disconnect the datasource when
