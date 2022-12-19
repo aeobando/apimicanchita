@@ -11,13 +11,13 @@ export class Usuarios extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
   nombres: string;
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
   apellidos: string;
 
@@ -29,7 +29,7 @@ export class Usuarios extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
   telefono: string;
 

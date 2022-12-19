@@ -8,11 +8,12 @@ import {
 } from '@loopback/repository';
 import {
   del, get,
-  getModelSchemaRef, param, patch, post, put, requestBody,
+  getModelSchemaRef, HttpErrors, param, patch, post, put, requestBody,
   response
 } from '@loopback/rest';
 import {Usuarios} from '../models';
 import {UsuariosRepository} from '../repositories';
+const jwt = require('jsonwebtoken');
 
 export class UsuariosController {
   constructor(
@@ -39,6 +40,48 @@ export class UsuariosController {
     usuarios: Omit<Usuarios, 'id'>,
   ): Promise<Usuarios> {
     return this.usuariosRepository.create(usuarios);
+  }
+
+
+  @post('/usuarios/login')
+  @response(200, {
+    description: 'Usuarios model instance',
+    content: {'application/json': {schema: getModelSchemaRef(Usuarios)}},
+  })
+  async login(
+    @requestBody({
+      content: {
+        'application/json': {
+          schema: getModelSchemaRef(Usuarios, {
+            title: 'NewUsuarios',
+            exclude: ['id'],
+          }),
+        },
+      },
+    })
+    usuarios: Omit<Usuarios, 'id'>,
+  ): Promise<any> {
+
+    let user = await this.usuariosRepository.findOne({where: {email: usuarios.email, password: usuarios.password}});
+    console.log(user)
+    if (user) {
+      let tk = jwt.sign({
+        exp: Math.floor(Date.now() / 1000) + (60 * 60),
+        data: {
+          username: user.email
+        }
+      }, 'semilla');
+      return {
+        data: {
+          email: user.email,
+          nombres: user.nombres,
+        },
+        token: tk,
+      }
+    } else {
+      throw new HttpErrors[401]("Usuario no encontrado");
+    }
+
   }
 
   @get('/usuarios/count')
