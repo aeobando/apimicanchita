@@ -31,7 +31,13 @@ export class Reservas extends Entity {
     type: 'string',
     required: true,
   })
-  hora: string;
+  horas: string;
+
+  @property({
+    type: 'string',
+    required: true,
+  })
+  minutos: string;
 
   // Define well-known properties here
 
