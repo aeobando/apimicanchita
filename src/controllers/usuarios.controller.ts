@@ -63,7 +63,7 @@ export class UsuariosController {
   ): Promise<any> {
 
     let user = await this.usuariosRepository.findOne({where: {email: usuarios.email, password: usuarios.password}});
-    console.log(user)
+
     if (user) {
       let tk = jwt.sign({
         exp: Math.floor(Date.now() / 1000) + (60 * 60),
@@ -75,10 +75,20 @@ export class UsuariosController {
         data: {
           email: user.email,
           nombres: user.nombres,
+          ingreso: true,
         },
         token: tk,
       }
     } else {
+
+      return {
+        data: {
+          email: "1",
+          nombres: null,
+          ingreso: false,
+        },
+        token: null,
+      }
       throw new HttpErrors[401]("Usuario no encontrado");
     }
 

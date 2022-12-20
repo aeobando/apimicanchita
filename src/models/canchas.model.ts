@@ -29,7 +29,7 @@ export class Canchas extends Entity {
 
   @property({
     type: 'string',
-    required: true,
+    required: false,
   })
   imagen: string;
 
